@@ -36,8 +36,6 @@ import java.util.List;
 import java.util.Map;
 
 public class HelloWorld implements CustomCodeMethod {
-
-public class HelloWorld implements CustomCodeMethod {
  
   @Override
   public String getMethodName() { 
@@ -54,6 +52,5 @@ public class HelloWorld implements CustomCodeMethod {
     return new ResponseToProcess(HttpURLConnection.HTTP_OK, map);
   }
  
-}
 
 }
