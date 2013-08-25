@@ -41,7 +41,7 @@ public class HelloWorld implements CustomCodeMethod {
  
   @Override
   public String getMethodName() { 
-    return "contact"; //no dashes or spaces allowed
+    return "Contact"; //no dashes or spaces allowed
   }
  
   @Override
