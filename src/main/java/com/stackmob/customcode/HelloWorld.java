@@ -94,7 +94,7 @@ public class HelloWorld implements CustomCodeMethod {
     DataService ds = serviceProvider.getDataService();
     try {
       // This is how you create an object in the `car` schema
-      ds.createObject("Contact", new SMObject(feedback));
+      ds.createObject("contact", new SMObject(feedback));
     }
     catch (InvalidSchemaException ise) {
       return Util.internalErrorResponse("invalid_schema", ise, errMap);  // http 500 - internal server error
