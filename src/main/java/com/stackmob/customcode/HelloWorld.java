@@ -37,35 +37,23 @@ import java.util.Map;
 
 public class HelloWorld implements CustomCodeMethod {
 
+public class HelloWorld implements CustomCodeMethod {
+ 
   @Override
-  public String getMethodName() {
-    return "contact";
+  public String getMethodName() { 
+    return "contact"; //no dashes or spaces allowed
   }
-
+ 
   @Override
-  public List<String> getParams() { return new ArrayList<String>(); }
-
-
-@Override
-public ResponseToProcess execute(ProcessedAPIRequest request, 
-        SDKServiceProvider serviceProvider) {
+  public List<String> getParams() { return new ArrayList<String>(); }
  
-    DataService ds = serviceProvider.getDataService();
-    List<SMCondition> query = new ArrayList<SMCondition>();
-    Map<String, List<SMObject>> results = new HashMap<String, List<SMObject>>();
+  @Override
+  public ResponseToProcess execute(ProcessedAPIRequest request, SDKServiceProvider serviceProvider) {
+    Map<String, Object> map = new HashMap<String, Object>();
+    map.put("msg", "Hello, world!");
+    return new ResponseToProcess(HttpURLConnection.HTTP_OK, map);
+  }
  
-    try {
-        //Get the car with ID "12345"   
-        query.add(new SMEquals("contact_id", new SMString("1")));
- 
-        // Read objects from the car schema
-        results.put("results", ds.readObjects("contact", query))  
- 
-    } catch (InvalidSchemaException ise) {
-    } catch (DatastoreException dse) {}
- 
-    return new ResponseToProcess(HttpURLConnection.HTTP_OK, results);
-}     
-
+}
 
 }
