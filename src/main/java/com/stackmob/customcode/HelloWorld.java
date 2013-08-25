@@ -31,7 +31,7 @@ public class HelloWorld implements CustomCodeMethod {
 
   @Override
   public String getMethodName() {
-    return "createXContact";
+    return "hello_world";
   }
 
   @Override
