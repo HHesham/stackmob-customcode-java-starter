@@ -43,68 +43,29 @@ public class HelloWorld implements CustomCodeMethod {
   }
 
   @Override
-  public List<String> getParams() {
-    return Arrays.asList("firstName","lastName","company","email");
-  }
+  public List<String> getParams() { return new ArrayList<String>(); }
+
 
 @Override
-  public ResponseToProcess execute(ProcessedAPIRequest request, SDKServiceProvider serviceProvider) {
-    String firstName = "";
-    String lastName = "";
-    String company = "";
-    String email="";
-
-    LoggerService logger = serviceProvider.getLoggerService(CreateObject.class);
-    // JSON object gets passed into the StackMob Logs
-    logger.debug(request.getBody());
-
-    // I'll be using these maps to print messages to console as feedback to the operation
-    Map<String, SMValue> feedback = new HashMap<String, SMValue>();
-    Map<String, String> errMap = new HashMap<String, String>();
-
-    /* The following try/catch block shows how to properly fetch parameters for PUT/POST operations
-     * from the JSON request body
-     */
-    JSONParser parser = new JSONParser();
-    try {
-      Object obj = parser.parse(request.getBody());
-      JSONObject jsonObject = (JSONObject) obj;
-
-      // Fetch the values passed in by the user from the body of JSON
-      firstName = (String) jsonObject.get("firstName");
-      lastName = (String) jsonObject.get("lastName");
-      company = (String) jsonObject.get("company");
-      email = (String) jsonObject.get("email");
-
-    } catch (ParseException pe) {
-      logger.error(pe.getMessage(), pe);
-      return Util.badRequestResponse(errMap);
-    }
-
-    if (Util.hasNulls(firstName, lastName, company,email)){
-      return Util.badRequestResponse(errMap);
-    }
-
-    feedback.put("firstName", new SMString(firstName));
-    feedback.put("lastName", new SMString(lastName));
-    feedback.put("company", SMString(company));
-    feedback.put("email", SMString(email));
-
-
+public ResponseToProcess execute(ProcessedAPIRequest request, 
+        SDKServiceProvider serviceProvider) {
+ 
     DataService ds = serviceProvider.getDataService();
+    List<SMCondition> query = new ArrayList<SMCondition>();
+    Map<String, List<SMObject>> results = new HashMap<String, List<SMObject>>();
+ 
     try {
-      // This is how you create an object in the `car` schema
-      ds.createObject("contact", new SMObject(feedback));
-    }
-    catch (InvalidSchemaException ise) {
-      return Util.internalErrorResponse("invalid_schema", ise, errMap);  // http 500 - internal server error
-    }
-    catch (DatastoreException dse) {
-      return Util.internalErrorResponse("datastore_exception", dse, errMap);  // http 500 - internal server error
-    }
-
-    return new ResponseToProcess(HttpURLConnection.HTTP_OK, feedback);
-  }
+        //Get the car with ID "12345"   
+        query.add(new SMEquals("contact_id", new SMString("1")));
+ 
+        // Read objects from the car schema
+        results.put("results", ds.readObjects("contact", query))  
+ 
+    } catch (InvalidSchemaException ise) {
+    } catch (DatastoreException dse) {}
+ 
+    return new ResponseToProcess(HttpURLConnection.HTTP_OK, results);
+}     
 
 
 }
