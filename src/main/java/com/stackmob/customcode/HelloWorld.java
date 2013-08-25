@@ -51,8 +51,8 @@ public class HelloWorld implements CustomCodeMethod {
  
     HashMap<String, Object> contact = new HashMap<String, Object>();
  
-    contact.put("firstName", new SMString(firstName)); //string
-    contact.put("lastName", new SMString(lastName)); //string
+    contact.put("firstName", new SMString("firstName")); //string
+    contact.put("lastName", new SMString("lastName")); //string
 
     try {
       ds.createObject("Contact", new SMObject(contact));
