@@ -40,10 +40,18 @@ public class HelloWorld implements CustomCodeMethod {
   }
 
   @Override
-  public ResponseToProcess execute(ProcessedAPIRequest request, SDKServiceProvider serviceProvider) {
-    Map<String, Object> map = new HashMap<String, Object>();
-    map.put("msg", "Hello, world!");
-    return new ResponseToProcess(HttpURLConnection.HTTP_OK, map);
-  }
+  public ResponseToProcess execute(ProcessedAPIRequest request, 
+        SDKServiceProvider serviceProvider) {
+    DataService ds = serviceProvider.getDataService();
+ 
+    HashMap<String, Object> contact = new HashMap<String, Object>();
+ 
+    contact.put("name", new SMString(name)); //string
+ 
+    try {
+      ds.createObject("contacts", new SMObject(contact));
+    } catch (InvalidSchemaException ise) {
+    } catch (DatastoreException dse) {}
+}
 
 }
