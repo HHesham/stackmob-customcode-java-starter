@@ -39,11 +39,26 @@ public class HelloWorld implements CustomCodeMethod {
     return new ArrayList<String>();
   }
 
+  // @Override
+  // public ResponseToProcess execute(ProcessedAPIRequest request, SDKServiceProvider serviceProvider) {
+  //   Map<String, Object> map = new HashMap<String, Object>();
+  //   map.put("msg", "contact!");
+  //   return new ResponseToProcess(HttpURLConnection.HTTP_OK, map);
+  // }
    @Override
   public ResponseToProcess execute(ProcessedAPIRequest request, SDKServiceProvider serviceProvider) {
-    Map<String, Object> map = new HashMap<String, Object>();
-    map.put("msg", "contact!");
-    return new ResponseToProcess(HttpURLConnection.HTTP_OK, map);
-  }
+    DataService ds = serviceProvider.getDataService();
+ 
+    HashMap<String, Object> contact = new HashMap<String, Object>();
+ 
+    contact.put("firstName", new SMString(firstName)); //string
+    contact.put("lastName", new SMString(lastName)); //string
+
+    try {
+      ds.createObject("Contact", new SMObject(contact));
+    } catch (InvalidSchemaException ise) {
+    } catch (DatastoreException dse) {}
+}
+
 
 }
