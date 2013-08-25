@@ -35,12 +35,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * This example will show a user how to write a custom code method
- * with three parameters `model`, `make`, and `year` which creates
- * an object in the car schema. We will be using the POST verb
- * method of parsing parameters from the JSON body.
- */
 
 public class HelloWorld implements CustomCodeMethod {
 
@@ -52,14 +46,13 @@ public class HelloWorld implements CustomCodeMethod {
   @Override
   public List<String> getParams() {
     // Please note that the strings `user` and `username` are unsuitable for parameter names
-    return Arrays.asList("model","make","year");
+    return Arrays.asList("firstName","lastName");
   }
 
   @Override
   public ResponseToProcess execute(ProcessedAPIRequest request, SDKServiceProvider serviceProvider) {
     String model = "";
     String make = "";
-    String year = "";
 
     LoggerService logger = serviceProvider.getLoggerService(HelloWorld.class);
     // JSON object gets passed into the StackMob Logs
@@ -78,26 +71,23 @@ public class HelloWorld implements CustomCodeMethod {
       JSONObject jsonObject = (JSONObject) obj;
 
       // Fetch the values passed in by the user from the body of JSON
-      model = (String) jsonObject.get("model");
-      make = (String) jsonObject.get("make");
-      year = (String) jsonObject.get("year");
+      model = (String) jsonObject.get("firstName");
+      make = (String) jsonObject.get("lastName");
     } catch (ParseException pe) {
       logger.error(pe.getMessage(), pe);
       return Util.badRequestResponse(errMap);
     }
 
-    if (Util.hasNulls(model, make, year)){
+    if (Util.hasNulls(model, make)){
       return Util.badRequestResponse(errMap);
     }
 
-    feedback.put("model", new SMString(model));
-    feedback.put("make", new SMString(make));
-    feedback.put("year", new SMInt(Long.parseLong(year)));
+    feedback.put("firstName", new SMString(model));
+    feedback.put("lastName", new SMString(make));
 
     DataService ds = serviceProvider.getDataService();
     try {
-      // This is how you create an object in the `car` schema
-      ds.createObject("car", new SMObject(feedback));
+      ds.createObject("Contact", new SMObject(feedback));
     }
     catch (InvalidSchemaException ise) {
       return Util.internalErrorResponse("invalid_schema", ise, errMap);  // http 500 - internal server error
