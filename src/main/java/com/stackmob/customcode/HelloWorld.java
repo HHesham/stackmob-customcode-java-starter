@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.stackmob.example;
+package com.stackmob.customcode;
 
 import com.stackmob.core.customcode.CustomCodeMethod;
 import com.stackmob.core.rest.ProcessedAPIRequest;
@@ -27,11 +27,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class contact implements CustomCodeMethod {
+public class HelloWorld implements CustomCodeMethod {
 
   @Override
   public String getMethodName() {
-    return "contact";
+    return "hello_world";
   }
 
   @Override
@@ -42,7 +42,7 @@ public class contact implements CustomCodeMethod {
   @Override
   public ResponseToProcess execute(ProcessedAPIRequest request, SDKServiceProvider serviceProvider) {
     Map<String, Object> map = new HashMap<String, Object>();
-    map.put("msg", "contact!");
+    map.put("msg", "Hello, world!");
     return new ResponseToProcess(HttpURLConnection.HTTP_OK, map);
   }
 
