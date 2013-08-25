@@ -16,13 +16,21 @@
 
 package com.stackmob.customcode;
 
+import com.stackmob.core.InvalidSchemaException;
+import com.stackmob.core.DatastoreException;
 import com.stackmob.core.customcode.CustomCodeMethod;
 import com.stackmob.core.rest.ProcessedAPIRequest;
 import com.stackmob.core.rest.ResponseToProcess;
+import com.stackmob.example.Util;
 import com.stackmob.sdkapi.SDKServiceProvider;
+import com.stackmob.sdkapi.*;
+
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import java.net.HttpURLConnection;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,29 +44,70 @@ public class HelloWorld implements CustomCodeMethod {
 
   @Override
   public List<String> getParams() {
-    return new ArrayList<String>();
+    return Arrays.asList("firstName","lastName","company","email","phone");
   }
 
-  // @Override
-  // public ResponseToProcess execute(ProcessedAPIRequest request, SDKServiceProvider serviceProvider) {
-  //   Map<String, Object> map = new HashMap<String, Object>();
-  //   map.put("msg", "contact!");
-  //   return new ResponseToProcess(HttpURLConnection.HTTP_OK, map);
-  // }
-   @Override
+@Override
   public ResponseToProcess execute(ProcessedAPIRequest request, SDKServiceProvider serviceProvider) {
-    DataService ds = serviceProvider.getDataService();
- 
-    HashMap<String, Object> contact = new HashMap<String, Object>();
- 
-    contact.put("firstName", new SMString("firstName")); //string
-    contact.put("lastName", new SMString("lastName")); //string
+    String firstName = "";
+    String lastName = "";
+    String company = "";
+    String email="";
+    String phone="";
+    
+    LoggerService logger = serviceProvider.getLoggerService(CreateObject.class);
+    // JSON object gets passed into the StackMob Logs
+    logger.debug(request.getBody());
 
+    // I'll be using these maps to print messages to console as feedback to the operation
+    Map<String, SMValue> feedback = new HashMap<String, SMValue>();
+    Map<String, String> errMap = new HashMap<String, String>();
+
+    /* The following try/catch block shows how to properly fetch parameters for PUT/POST operations
+     * from the JSON request body
+     */
+    JSONParser parser = new JSONParser();
     try {
-      ds.createObject("Contact", new SMObject(contact));
-    } catch (InvalidSchemaException ise) {
-    } catch (DatastoreException dse) {}
-}
+      Object obj = parser.parse(request.getBody());
+      JSONObject jsonObject = (JSONObject) obj;
+
+      // Fetch the values passed in by the user from the body of JSON
+      firstName = (String) jsonObject.get("firstName");
+      lastName = (String) jsonObject.get("lastName");
+      company = (String) jsonObject.get("company");
+      email = (String) jsonObject.get("email");
+      phone = (String) jsonObject.get("phone");
+
+    } catch (ParseException pe) {
+      logger.error(pe.getMessage(), pe);
+      return Util.badRequestResponse(errMap);
+    }
+
+    if (Util.hasNulls(firstName, lastName, company,email,phone)){
+      return Util.badRequestResponse(errMap);
+    }
+
+    feedback.put("firstName", new SMString(firstName));
+    feedback.put("lastName", new SMString(lastName));
+    feedback.put("company", SMString(company));
+    feedback.put("email", SMString(email));
+    feedback.put("phone", SMString(phone));
+
+
+    DataService ds = serviceProvider.getDataService();
+    try {
+      // This is how you create an object in the `car` schema
+      ds.createObject("Contact", new SMObject(feedback));
+    }
+    catch (InvalidSchemaException ise) {
+      return Util.internalErrorResponse("invalid_schema", ise, errMap);  // http 500 - internal server error
+    }
+    catch (DatastoreException dse) {
+      return Util.internalErrorResponse("datastore_exception", dse, errMap);  // http 500 - internal server error
+    }
+
+    return new ResponseToProcess(HttpURLConnection.HTTP_OK, feedback);
+  }
 
 
 }
