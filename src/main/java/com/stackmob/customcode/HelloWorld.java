@@ -27,11 +27,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class HelloWorld implements CustomCodeMethod {
+public class contact implements CustomCodeMethod {
 
   @Override
   public String getMethodName() {
-    return "hello_world";
+    return "contact";
   }
 
   @Override
@@ -42,7 +42,7 @@ public class HelloWorld implements CustomCodeMethod {
   @Override
   public ResponseToProcess execute(ProcessedAPIRequest request, SDKServiceProvider serviceProvider) {
     Map<String, Object> map = new HashMap<String, Object>();
-    map.put("msg", "Hello, world!");
+    map.put("msg", "contact!");
     return new ResponseToProcess(HttpURLConnection.HTTP_OK, map);
   }
 
