@@ -44,7 +44,7 @@ public class HelloWorld implements CustomCodeMethod {
 
   @Override
   public List<String> getParams() {
-    return Arrays.asList("firstName","lastName","company","email","phone");
+    return Arrays.asList("firstName","lastName","company","email");
   }
 
 @Override
@@ -53,8 +53,7 @@ public class HelloWorld implements CustomCodeMethod {
     String lastName = "";
     String company = "";
     String email="";
-    String phone="";
-    
+
     LoggerService logger = serviceProvider.getLoggerService(CreateObject.class);
     // JSON object gets passed into the StackMob Logs
     logger.debug(request.getBody());
@@ -76,14 +75,13 @@ public class HelloWorld implements CustomCodeMethod {
       lastName = (String) jsonObject.get("lastName");
       company = (String) jsonObject.get("company");
       email = (String) jsonObject.get("email");
-      phone = (String) jsonObject.get("phone");
 
     } catch (ParseException pe) {
       logger.error(pe.getMessage(), pe);
       return Util.badRequestResponse(errMap);
     }
 
-    if (Util.hasNulls(firstName, lastName, company,email,phone)){
+    if (Util.hasNulls(firstName, lastName, company,email)){
       return Util.badRequestResponse(errMap);
     }
 
@@ -91,7 +89,6 @@ public class HelloWorld implements CustomCodeMethod {
     feedback.put("lastName", new SMString(lastName));
     feedback.put("company", SMString(company));
     feedback.put("email", SMString(email));
-    feedback.put("phone", SMString(phone));
 
 
     DataService ds = serviceProvider.getDataService();
