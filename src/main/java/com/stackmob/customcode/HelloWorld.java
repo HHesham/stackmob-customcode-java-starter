@@ -42,7 +42,7 @@ import java.util.Map;
  * method of parsing parameters from the JSON body.
  */
 
-public class CreateObject implements CustomCodeMethod {
+public class HelloWorld implements CustomCodeMethod {
 
   @Override
   public String getMethodName() {
@@ -61,7 +61,7 @@ public class CreateObject implements CustomCodeMethod {
     String make = "";
     String year = "";
 
-    LoggerService logger = serviceProvider.getLoggerService(CreateObject.class);
+    LoggerService logger = serviceProvider.getLoggerService(HelloWorld.class);
     // JSON object gets passed into the StackMob Logs
     logger.debug(request.getBody());
 
