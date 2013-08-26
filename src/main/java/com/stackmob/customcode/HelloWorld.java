@@ -62,7 +62,33 @@ public class HelloWorld implements CustomCodeMethod {
     // I'll be using these maps to print messages to console as feedback to the operation
     Map<String, SMValue> feedback = new HashMap<String, SMValue>();
     Map<String, String> errMap = new HashMap<String, String>();    
-         
+   JSONParser parser = new JSONParser();
+    try {
+      Object obj = parser.parse(request.getBody());
+      JSONObject jsonObject = (JSONObject) obj;
+
+      // Fetch the values passed in by the user from the body of JSON
+      model = (String) jsonObject.get("model");
+      make = (String) jsonObject.get("make");
+      year = (String) jsonObject.get("year");
+    } catch (ParseException pe) {
+      logger.error(pe.getMessage(), pe);
+      return Util.badRequestResponse(errMap);
+    }      
+   if (Util.hasNulls(model, make, year)){
+      return Util.badRequestResponse(errMap);
+    }
+
+    feedback.put("model", new SMString(model));
+    feedback.put("make", new SMString(make));
+    feedback.put("year", new SMInt(Long.parseLong(year)));
+   
+   
+   
+   
+   
+   
+   
          
     DataService ds = serviceProvider.getDataService();
  
