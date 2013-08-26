@@ -38,14 +38,15 @@ import java.util.Map;
 
 public class HelloWorld implements CustomCodeMethod {
 
-  @Override
+ @Override
   public String getMethodName() {
-    return "hello_world";
+    return "CRUD_Create";
   }
 
   @Override
   public List<String> getParams() {
-    return new ArrayList<String>();
+    // Please note that the strings `user` and `username` are unsuitable for parameter names
+    return Arrays.asList("model","make","year");
   }
 
   @Override
