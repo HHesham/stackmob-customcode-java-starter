@@ -53,10 +53,10 @@ public class HelloWorld implements CustomCodeMethod {
         SDKServiceProvider serviceProvider) {
     DataService ds = serviceProvider.getDataService();
  
-    HashMap<String, Object> contact = new HashMap<String, Object>();
+    Map<String, Object> contact = new Map<String, Object>();
  
-    contact.put("model", new SMString(model)); //string
-    contact.put("make", new SMString(make)); //string
+    contact.put("model", "model"); //string
+    contact.put("make", "make"); //string
 
     try {
       // This is how you create an object in the `car` schema
