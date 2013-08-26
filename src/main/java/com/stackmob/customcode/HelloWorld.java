@@ -55,7 +55,7 @@ public class HelloWorld implements CustomCodeMethod {
     String make = "";
     String year = "";
 
-    LoggerService logger = serviceProvider.getLoggerService(CreateObject.class);
+    LoggerService logger = serviceProvider.getLoggerService(HelloWorld.class);
     // JSON object gets passed into the StackMob Logs
     logger.debug(request.getBody());
 
