@@ -53,7 +53,7 @@ public class HelloWorld implements CustomCodeMethod {
         SDKServiceProvider serviceProvider) {
     DataService ds = serviceProvider.getDataService();
  
-    Map<String, Object> contact = new HashMap<String, Object>();
+    HashMap<String, Object> contact = new HashMap<String, Object>();
  
     contact.put("model", "model"); //string
     contact.put("make", "make"); //string
