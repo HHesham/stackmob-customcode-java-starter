@@ -55,8 +55,8 @@ public class HelloWorld implements CustomCodeMethod {
  
     HashMap<String, Object> contact = new HashMap<String, Object>();
  
-    contact.put("model", "model"); //string
-    contact.put("make", "make"); //string
+    contact.put("model",new SMString(model)); //string
+    contact.put("make", new SMString(make)); //string
 
     // try {
     //   // This is how you create an object in the `car` schema
