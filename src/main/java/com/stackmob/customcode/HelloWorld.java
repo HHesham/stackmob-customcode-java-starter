@@ -73,10 +73,10 @@ public class HelloWorld implements CustomCodeMethod {
       year = (String) jsonObject.get("year");
     } catch (ParseException pe) {
       logger.error(pe.getMessage(), pe);
-      return Util.badRequestResponse(errMap);
+      return badRequestResponse(errMap);
     }      
-   if (Util.hasNulls(model, make, year)){
-      return Util.badRequestResponse(errMap);
+   if (hasNulls(model, make, year)){
+      return badRequestResponse(errMap);
     }
 
     feedback.put("model", new SMString(model));
@@ -102,11 +102,11 @@ public class HelloWorld implements CustomCodeMethod {
     // } catch (DatastoreException dse) {}
     return new ResponseToProcess(HttpURLConnection.HTTP_OK, contact);
 }
-  public static Boolean isEmpty(String str) {
+  public Boolean isEmpty(String str) {
     return (str == null || str.isEmpty());
   }
 
-  public static Boolean hasNulls(String... strings){
+  public Boolean hasNulls(String... strings){
     for (String s : strings){
       if(isEmpty(s)){
         return true;
@@ -115,17 +115,17 @@ public class HelloWorld implements CustomCodeMethod {
     return false;
   }
 
-  public static ResponseToProcess badRequestResponse(Map<String, String> map){
+  public ResponseToProcess badRequestResponse(Map<String, String> map){
     map.put("error", "Please fill in all parameters correctly");
     return new ResponseToProcess(HttpURLConnection.HTTP_BAD_REQUEST, map);
   }
 
-  public static ResponseToProcess badRequestResponse(Map<String, String> map, String message){
+  public ResponseToProcess badRequestResponse(Map<String, String> map, String message){
     map.put("error", message);
     return new ResponseToProcess(HttpURLConnection.HTTP_BAD_REQUEST, map);
   }
 
-  public static ResponseToProcess internalErrorResponse(String message, Exception e, Map<String, String> map){
+  public ResponseToProcess internalErrorResponse(String message, Exception e, Map<String, String> map){
     map.put("error", message);
     map.put("detail", e.toString());
     return new ResponseToProcess(HttpURLConnection.HTTP_INTERNAL_ERROR, map);
