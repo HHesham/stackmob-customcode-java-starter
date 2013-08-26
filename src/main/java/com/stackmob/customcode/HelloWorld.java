@@ -51,6 +51,19 @@ public class HelloWorld implements CustomCodeMethod {
 
   public ResponseToProcess execute(ProcessedAPIRequest request, 
         SDKServiceProvider serviceProvider) {
+     String model = "";
+    String make = "";
+    String year = "";
+
+    LoggerService logger = serviceProvider.getLoggerService(CreateObject.class);
+    // JSON object gets passed into the StackMob Logs
+    logger.debug(request.getBody());
+
+    // I'll be using these maps to print messages to console as feedback to the operation
+    Map<String, SMValue> feedback = new HashMap<String, SMValue>();
+    Map<String, String> errMap = new HashMap<String, String>();    
+         
+         
     DataService ds = serviceProvider.getDataService();
  
     HashMap<String, Object> contact = new HashMap<String, Object>();
