@@ -58,11 +58,10 @@ public class HelloWorld implements CustomCodeMethod {
     contact.put("model",new SMString("model")); //string
     contact.put("make", new SMString("make")); //string
 
-    // try {
-    //   // This is how you create an object in the `car` schema
-    //   ds.createObject("Contact", new SMObject(contact));
-    // } catch (InvalidSchemaException ise) {
-    // } catch (DatastoreException dse) {}
+    try {
+      ds.createObject("Contact", new SMObject(contact));
+    } catch (InvalidSchemaException ise) {
+    } catch (DatastoreException dse) {}
     return new ResponseToProcess(HttpURLConnection.HTTP_OK, contact);
 }
 
