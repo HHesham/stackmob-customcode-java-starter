@@ -57,10 +57,10 @@ public class HelloWorld implements CustomCodeMethod {
  
     contact.put("name",new SMString("name")); //string
 
-    try {
-      ds.createObject("Contact", new SMObject(contact));
-    } catch (InvalidSchemaException ise) {
-    } catch (DatastoreException dse) {}
+    // try {
+    //   ds.createObject("Contact", new SMObject(contact));
+    // } catch (InvalidSchemaException ise) {
+    // } catch (DatastoreException dse) {}
     return new ResponseToProcess(HttpURLConnection.HTTP_OK, contact);
 }
   public static Boolean isEmpty(String str) {
