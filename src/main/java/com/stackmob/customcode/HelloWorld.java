@@ -82,25 +82,19 @@ public class HelloWorld implements CustomCodeMethod {
     feedback.put("model", new SMString(model));
     feedback.put("make", new SMString(make));
     feedback.put("year", new SMInt(Long.parseLong(year)));
-   
-   
-   
-   
-   
-   
-   
-         
-    DataService ds = serviceProvider.getDataService();
- 
-    HashMap<String, Object> contact = new HashMap<String, Object>();
- 
-    contact.put("name",new SMString("name")); //string
+   DataService ds = serviceProvider.getDataService();
+    try {
+      ds.createObject("Contact", new SMObject(feedback));
+    }
+    catch (InvalidSchemaException ise) {
+      return internalErrorResponse("invalid_schema", ise, errMap);  // http 500 - internal server error
+    }
+    catch (DatastoreException dse) {
+      return internalErrorResponse("datastore_exception", dse, errMap);  // http 500 - internal server error
+    }
 
-    // try {
-    //   ds.createObject("Contact", new SMObject(contact));
-    // } catch (InvalidSchemaException ise) {
-    // } catch (DatastoreException dse) {}
-    return new ResponseToProcess(HttpURLConnection.HTTP_OK, contact);
+    return new ResponseToProcess(HttpURLConnection.HTTP_OK, feedback);
+   
 }
   public Boolean isEmpty(String str) {
     return (str == null || str.isEmpty());
