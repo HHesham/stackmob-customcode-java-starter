@@ -22,7 +22,6 @@ import com.stackmob.core.rest.ResponseToProcess;
 import com.stackmob.sdkapi.SDKServiceProvider;
 import com.stackmob.core.InvalidSchemaException;
 import com.stackmob.core.DatastoreException;
-import com.stackmob.example.Util;
 import com.stackmob.sdkapi.*;
 
 
