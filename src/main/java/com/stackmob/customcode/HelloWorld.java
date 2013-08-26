@@ -46,7 +46,7 @@ public class HelloWorld implements CustomCodeMethod {
   @Override
   public List<String> getParams() {
     // Please note that the strings `user` and `username` are unsuitable for parameter names
-    return Arrays.asList("model","make");
+    return Arrays.asList("name");
   }
 
   public ResponseToProcess execute(ProcessedAPIRequest request, 
@@ -55,8 +55,7 @@ public class HelloWorld implements CustomCodeMethod {
  
     HashMap<String, Object> contact = new HashMap<String, Object>();
  
-    contact.put("model",new SMString("model")); //string
-    contact.put("make", new SMString("make")); //string
+    contact.put("name",new SMString("name")); //string
 
     try {
       ds.createObject("Contact", new SMObject(contact));
